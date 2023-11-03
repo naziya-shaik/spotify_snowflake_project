@@ -1,0 +1,132 @@
+create database spotify_db
+// creating album table:
+create or replace table spotify_db.public.tblalbum(
+album_id STRING,
+name       STRING,
+release_date DATE,
+total_tracks NUMBER,
+url        STRING,
+release_date_precision STRING);
+
+select * from tblalbum;
+
+//creating artist table:
+create or replace table tblartist(
+artist_id string,
+artist_name string,
+external_url STRING,
+type STRING
+);
+select * from tblartist;
+// creating songs table
+create or replace table tblsongs(
+  song_id  STRING,       
+  song_name     STRING,            
+  duration_ms   NUMBER,            
+  url          STRING,         
+  popularity   NUMBER,             
+  song_added   DATE,
+  album_id      STRING,          
+  artist_id     STRING
+ );
+ select * from tblsongs;
+ 
+// creating storage_integration to the s3 bucket:
+
+create or replace storage integration s3_init
+TYPE = External_stage
+storage_provider = s3
+enabled=True
+storage_aws_role_ARN='arn:aws:iam::004115969825:role/spotify_music'
+storage_allowed_locations=('s3://spotify-etl-prjt-naziya/transformed_data/')
+comment='Creating connection to S3'
+
+DESC integration s3_init;
+
+//creating file format:
+CREATE FILE FORMAT my_file_format
+TYPE = 'CSV'
+RECORD_DELIMITER = '\n'
+FIELD_DELIMITER=','
+SKIP_HEADER = 1
+null_if = ('Null','null')
+empty_field_as_null = True;
+
+// creating external stage:
+create or replace stage aws_spotify_data
+url = 's3://spotify-etl-prjt-naziya/transformed_data/'
+storage_integration = s3_init
+file_format = my_file_format;
+
+list @aws_spotify_data/album_data;
+
+//creating snowpipe for album data:
+create or replace pipe album_pipe
+auto_ingest = True
+as 
+copy into spotify_db.public.tblalbum
+from @aws_spotify_data/album_data
+on_error='continue';
+
+select * from tblalbum;
+
+desc pipe album_pipe;
+
+// snowpipe for songs data
+create or replace pipe songs_pipe
+auto_ingest = True
+as 
+copy into tblsongs
+from @aws_spotify_data/songs_data
+on_error='continue';
+
+select * from tblsongs;
+
+//snowpipe for artist data
+create or replace pipe artist_pipe
+auto_ingest = True
+as 
+copy into tblartist
+from @aws_spotify_data/artist_data
+on_error='continue';
+ 
+ select * from tblartist;
+
+// data Analysis:
+// popular top 10 songs
+select song_name,tblalbum.name as album_name,tblartist.artist_name from tblsongs
+inner join tblalbum on tblsongs.album_id=tblalbum.album_id
+inner join tblartist on tblsongs.artist_id=tblartist.artist_id
+order by popularity desc limit 10;
+
+// oldest album in the playlist
+select tal.album_id,name as album_name,song_name from tblalbum tal
+inner join tblsongs ts on tal.album_id=ts.album_id
+order by release_date limit 1 ;
+
+// latest released song in the playlist:
+select tal.album_id,name as album_name,song_name from tblalbum tal
+inner join tblsongs ts on tal.album_id=ts.album_id
+order by release_date desc  limit 1 ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

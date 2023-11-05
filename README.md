@@ -1,1 +1,1 @@
-![image](https://github.com/naziya-shaik/spotify_snowflake_project/assets/111407441/d31d6d15-5864-424b-9e56-e463034c86f3)
+![image](https://github.com/naziya-shaik/spotify_snowflake_project/assets/111407441/42b9ed73-01de-405a-b667-2c0e7f63048c)

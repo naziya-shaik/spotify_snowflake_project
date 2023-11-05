@@ -1,7 +1,12 @@
 project overview:
+
 This project extracts divers data from the Spotify API,including album,artist,songs from a playlist and stores it in AWS Simple Storage Service(S3) for analysis. The ultimate goal is to establish an automated pipeline hosted on AWS for data extraction and processing.
 
-
+Data Processing pipeline steps:
+1.Data Extraction:
+A Python script on AWS Lambda extracts the information in JSON format and uploads it to AWS S3 bucket.This triggered using Amazon CloudWatch on a daily basis.
+2.Data Transformatiom:
+Asecond Lambda function is triggered whenever a new data is created in the S3 bucket.It takes the data from s3bucket and extracts the info for album,artist and songs and then stores in three different CSV files.
 
 
 

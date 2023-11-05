@@ -1,4 +1,4 @@
-project Overview:
+Project Overview:
 
 This project extracts divers data from the Spotify API,including album,artist,songs from a playlist and stores it in AWS Simple Storage Service(S3) for analysis. The ultimate goal is to establish an automated pipeline hosted on AWS for data extraction and processing.
 

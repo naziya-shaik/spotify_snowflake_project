@@ -22,13 +22,13 @@ By connecting Snowflake to Power BI, you can access this data directly, ensuring
 
 Tools used:
 
-Spotify API
-Python
-Amazon CloudWatch
-Amazon Lambda
-Amazon Simple Storage Service(S3)
-Snowflake
-Powerbi
+Spotify API,
+Python,
+Amazon CloudWatch,
+Amazon Lambda,
+Amazon Simple Storage Service(S3),
+Snowflake,
+Powerbi.
 
 
 

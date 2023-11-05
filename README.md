@@ -1,4 +1,4 @@
-project overview:
+project Overview:
 
 This project extracts divers data from the Spotify API,including album,artist,songs from a playlist and stores it in AWS Simple Storage Service(S3) for analysis. The ultimate goal is to establish an automated pipeline hosted on AWS for data extraction and processing.
 
@@ -19,6 +19,16 @@ by using snowpipe automatically data will be updated in album,artist and songs t
 
 5.Data visualisation:
 By connecting Snowflake to Power BI, you can access this data directly, ensuring that your reports and dashboards are based on the most up-to-date information.
+
+Tools used:
+
+Spotify API
+Python
+Amazon CloudWatch
+Amazon Lambda
+Amazon Simple Storage Service(S3)
+Snowflake
+Powerbi
 
 
 
